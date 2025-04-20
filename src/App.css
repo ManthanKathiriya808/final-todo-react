@@ -1,0 +1,336 @@
+/* From Uiverse.io by theleaderofenemy */ 
+.container {
+  width: 100%;
+  height: 100%;
+  /* z-index: -10 !important; */
+  --s: 60px;
+  --c1: #6ca700;
+  --c2: #406102;
+  --_g: radial-gradient(
+    25% 25% at 25% 25%,
+    var(--c1) 99%,
+    rgba(0, 0, 0, 0) 101%
+  );
+  background: var(--_g) var(--s) var(--s) / calc(2 * var(--s))
+      calc(2 * var(--s)),
+    var(--_g) 0 0 / calc(2 * var(--s)) calc(2 * var(--s)),
+    radial-gradient(50% 50%, var(--c2) 98%, rgba(0, 0, 0, 0)) 0 0 / var(--s)
+      var(--s),
+    repeating-conic-gradient(var(--c2) 0 50%, var(--c1) 0 100%)
+      calc(0.5 * var(--s)) 0 / calc(2 * var(--s)) var(--s);
+}
+
+.input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 400px; /* Prevent overflow */
+}
+
+.input {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  padding: 18px 40px 18px 50px;
+  font-size: large;
+  background-color: transparent;
+  cursor: pointer;
+  transition: all 0.5s ease-in-out;
+  flex: 1;
+}
+
+.input::placeholder {
+  color: transparent;
+}
+
+.input:focus::placeholder {
+  color: rgb(131, 128, 128);
+}
+
+.input:focus,
+.input:not(:placeholder-shown) {
+  background-color: #fff;
+  border: 1px solid rgb(91, 107, 255);
+  width: 100%;
+  cursor: text;
+  padding-left: 50px;
+  padding-right: 45px;
+}
+
+/* Left Icon (➕) */
+.icon-left {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 45px;
+  width: 45px;
+  background-color: #fff;
+  border-radius: 99px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(91, 107, 255);
+  color: rgb(91, 107, 255);
+  font-size: 1.5rem;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Right Submit Icon (✅) */
+.icon-right {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  color: rgb(91, 107, 255);
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+/* Show right icon only on focus or text */
+.input:focus ~ .icon-right,
+.input:not(:placeholder-shown) ~ .icon-right {
+  opacity: 1;
+}
+
+
+
+
+/* From Uiverse.io by msadakousema */ 
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.checkbox-container label {
+  cursor: pointer;
+}
+
+.checkbox input[type="checkbox"] {
+  display: none; /* Hide the default checkbox */
+}
+.checkbox {
+  width: 1.5rem;
+  height: 1.5rem;
+  background-color: transparent;
+  margin-right: 0.5rem;
+  border-radius: 6px;
+  border: 2px solid #555;
+  position: relative;
+  overflow: hidden;
+  transition:
+    all 0.3s ease,
+    0.2s border cubic-bezier(0.26, 0.62, 0.43, 1.06);
+  cursor: pointer;
+}
+
+.checkbox::before {
+  content: "";
+  position: absolute;
+  top: 232%; /* Starts outside `.background` */
+  left: 50%;
+  transform: translate(-50%, -100%) scale(0.75); /* Scaled down initially */
+  border-radius: 50% 20% / 30% 70%;
+  width: 115%;
+  height: 115%;
+  filter: blur(4px);
+  background: #6ca700;
+  z-index: 1; /* Places the pseudo-element behind `.download` */
+  transition:
+    transform 0.56s cubic-bezier(0.5, 0.26, 0.7, 1.8),
+    top 0.38s ease,
+    filter 0.48s ease; /* Smooth position and scaling transitions */
+}
+.checkbox::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 75%;
+  height: 75%;
+  clip-path: polygon(
+    41% 52%,
+    26% 35%,
+    10% 51%,
+    37% 88%,
+    37% 88%,
+    37% 88%,
+    37% 88%,
+    91% 33%,
+    78% 18%
+  );
+  background: white;
+  z-index: 1;
+  opacity: 0; /* Initially hidden */
+  transition: all 0.3s cubic-bezier(0.93, 0.17, 0.43, 1.07);
+}
+
+/* Use :has selector to target the checkbox when it's checked */
+.checkbox-container:has(.checkbox input[type="checkbox"]:checked)
+  .checkbox::before {
+  top: 50%; /* Moves to the center of `` */
+  transform: translate(-50%, -50%) scale(1); /* Fully fills the `.download` */
+  filter: blur(0px);
+}
+
+/* Ensure the pseudo-element reacts to the checkbox state */
+.checkbox-container:has(.checkbox input[type="checkbox"]:checked)
+  .checkbox::after {
+  opacity: 1;
+  transform: translate(-50%, -50%) perspective(70px) scale(1);
+  animation: checkmarkAnimation 0.5s ease-in-out forwards;
+}
+
+.checkbox:has(input[type="checkbox"]:checked) {
+  border: 0px solid; /* Border disappears when checked */
+}
+
+@keyframes checkmarkAnimation {
+  0% {
+    opacity: 0;
+    transform: perspective(70px) translate(10%, -20%) rotate(43deg)
+      rotateY(100deg) scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: perspective(70px) translate(-57%, -42%) rotate(32deg)
+      rotateY(55deg) scale(1.32);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(70px) translate(-50%, -50%) rotate(0deg)
+      rotateY(0deg) scale(1);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* From Uiverse.io by philipo30 */ 
+.delete-button {
+  position: relative;
+  padding: 0.5em;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.5em;
+  transition: transform 0.2s ease;
+}
+
+.trash-svg {
+  width: 4em;
+  height: 4em;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  overflow: visible;
+}
+
+#lid-group {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.delete-button:hover #lid-group {
+  transform: rotate(-28deg) translateY(2px);
+}
+
+.delete-button:active #lid-group {
+  transform: rotate(-12deg) scale(0.98);
+}
+
+.delete-button:hover .trash-svg {
+  transform: scale(1.08) rotate(3deg);
+}
+
+.delete-button:active .trash-svg {
+  transform: scale(0.96) rotate(-1deg);
+}
+
+
+
+
+
+
+
+
+
+
+/* From Uiverse.io by vinodjangid07 */ 
+.editBtn {
+  width: 35px;
+  height: 35px;
+  border-radius: 20px;
+  border: none;
+  background-color: rgb(93, 93, 116);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.123);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+.editBtn::before {
+  content: "";
+  width: 200%;
+  height: 200%;
+  background-color: rgb(102, 102, 141);
+  position: absolute;
+  z-index: 1;
+  transform: scale(0);
+  transition: all 0.3s;
+  border-radius: 50%;
+  filter: blur(10px);
+}
+.editBtn:hover::before {
+  transform: scale(1);
+}
+.editBtn:hover {
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.336);
+}
+
+.editBtn svg {
+  height: 17px;
+  fill: white;
+  z-index: 3;
+  transition: all 0.2s;
+  transform-origin: bottom;
+}
+.editBtn:hover svg {
+  transform: rotate(-15deg) translateX(5px);
+}
+.editBtn::after {
+  content: "";
+  width: 25px;
+  height: 1.5px;
+  position: absolute;
+  bottom: 19px;
+  left: -5px;
+  background-color: white;
+  border-radius: 2px;
+  z-index: 2;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s ease-out;
+}
+.editBtn:hover::after {
+  transform: scaleX(1);
+  left: 0px;
+  transform-origin: right;
+}
