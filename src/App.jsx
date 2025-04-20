@@ -2,12 +2,12 @@
 import { useState } from 'react'
 import './App.css'
 import { v4 as uuidv4 } from 'uuid';
-
+import { Line, Circle } from 'rc-progress';
+import ProgressBar from "@ramonak/react-progress-bar";
 function App() {
 
   const [todo,setTodo] = useState("")
   const [data,setData] = useState([])
-
 
 
 
@@ -22,8 +22,7 @@ function handleSubmit(){
   }
 
       setData((prev) => [...prev,newTodo])
-      console.log(data)
-
+   
       setTodo("")
 
 }
@@ -33,6 +32,7 @@ function deleTodo(id){
 
  let deleData = data.filter((ele) => ele.id != id)
 
+
  setData(deleData)
 }
 
@@ -41,6 +41,8 @@ function updateData(id){
  const updated = data?.map((ele)=> ( ele.id == id ? {...ele,todo: setTodo(ele.todo)} : ele ))
 // setTodo(updated)
 // setData(updated)
+
+
 
 }
 
@@ -75,6 +77,52 @@ function checking(id){
                   <h1  className="text-4xl font-bold " >  Tasks</h1>
               </div>
 
+            <div className='p-5 flex items-center'> 
+          
+          
+              {
+                data.length > 0 && (
+
+                    <>
+          <div className='  flex-grow   '>
+                      
+                      <>
+
+                  
+                  <ProgressBar
+                          completed={((data.filter(item => item.isChecked).length / data.length) * 100).toFixed(0)}
+                          bgColor="#7C3AED" 
+                          baseBgColor="#F3F4F6" 
+                          height="18px"
+                          borderRadius="10px"
+                          labelColor="white"
+                          labelAlignment="outside"
+                          animateOnRender
+                        />
+                      </>
+                    
+                  
+    </div>
+
+<div  className=' text-2xl font-bold  py-3 px-4 text-white'>
+
+        <div className="flex gap-1" >
+        {
+              data.reduce((total,item) => total +  item.isChecked,0 )
+        }
+        <p>/</p>
+        {
+          data.length
+        }
+        </div>
+        <div>Task</div>
+
+</div>
+                    </>
+                )
+          
+              }
+ </div>
 
             <div className='px-4'>
 
