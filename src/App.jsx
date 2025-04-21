@@ -1,16 +1,28 @@
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import { v4 as uuidv4 } from 'uuid';
 import { Line, Circle } from 'rc-progress';
-import ProgressBar from "@ramonak/react-progress-bar";
+// import ProgressBar from "@ramonak/react-progress-bar";
 function App() {
 
   const [todo,setTodo] = useState("")
   const [data,setData] = useState([])
 
 
+  function setLocal(d){
+    localStorage.setItem("data", JSON.stringify(d)) || []
+    getLocal()
+  }
 
+  function getLocal(){
+    let local = JSON.parse(localStorage.getItem("data"))
+    setData(local)
+  }
+
+useEffect(()=>{
+  getLocal()
+},[])
   const id =uuidv4();
 
 function handleSubmit(){
@@ -21,8 +33,9 @@ function handleSubmit(){
     isChecked:false
   }
 
-      setData((prev) => [...prev,newTodo])
-   
+      // setData((prev) => [...prev,newTodo])
+      data.push(newTodo)
+      setLocal(data)
       setTodo("")
 
 }
@@ -33,7 +46,7 @@ function deleTodo(id){
  let deleData = data.filter((ele) => ele.id != id)
 
 
- setData(deleData)
+ setLocal(deleData)
 }
 
 
@@ -50,7 +63,8 @@ function updateData(id){
 function checking(id){
 
   const ckecked = data.map((ele)=> ele.id == id ? {...ele, isChecked : !ele.isChecked} : ele)
-  setData(ckecked)
+  // setData(ckecked)
+  setLocal(ckecked)
 }
 
 
@@ -86,7 +100,8 @@ function checking(id){
                     <>
           <div className='  flex-grow   '>
                       
-                      <>
+          <Line percent={((data.filter(item => item.isChecked).length / data.length) * 100).toFixed(0)} strokeWidth={8}  strokeColor="#D3D3D3" />
+                      {/* <>
 
                   
                   <ProgressBar
@@ -99,7 +114,7 @@ function checking(id){
                           labelAlignment="outside"
                           animateOnRender
                         />
-                      </>
+                      </> */}
                     
                   
     </div>
